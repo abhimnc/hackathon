@@ -25,12 +25,6 @@ st.markdown(
         text-decoration: underline;
     }
 
-    .rating {
-        color: #f5b301;
-        font-size: 16px;
-        margin-top: 4px;
-        margin-bottom: 4px;
-    }
     </style>
     """,
     unsafe_allow_html=True,
@@ -44,30 +38,6 @@ def clean_html(text):
         return ""
     return re.sub("<.*?>", "", text)
 
-
-def compute_rating(analysis):
-
-    score = 0
-
-    if analysis.get("summary"):
-        score += 3
-
-    if analysis.get("main_topics"):
-        score += 3
-
-    if analysis.get("difficulty") not in ["Unknown", None]:
-        score += 2
-
-    if analysis.get("why_useful_for_query"):
-        score += 2
-
-    return max(score, 1)
-
-
-def rating_stars(score):
-
-    stars = "⭐" * score
-    return f"{score}/10 {stars}"
 
 
 # ---------- CONFIG ----------
@@ -136,32 +106,17 @@ if st.button("Search"):
         if snippet:
             st.write(snippet)
 
-        # Rating
-        rating = compute_rating(analysis)
-
-        st.markdown(
-            f"<div class='rating'>Rating: {rating_stars(rating)}</div>",
-            unsafe_allow_html=True
-        )
 
         # Explanation (Expandable)
         with st.expander("Why this result"):
 
             summary = analysis.get("summary", "No summary available.")
             topics = analysis.get("main_topics", [])
-            difficulty = analysis.get("difficulty", "Unknown")
-            usefulness = analysis.get("why_useful_for_query", [])
 
-            st.write("**Summary:**", summary)
+            st.markdown(f"**title:** {title}")
+            st.markdown(f"**summary:** {summary}")
 
             if topics:
-                st.write("**Topics:**", ", ".join(topics))
-
-            st.write("**Difficulty:**", difficulty)
-
-            if usefulness:
-                st.write("**Why useful:**")
-                for u in usefulness:
-                    st.write(f"- {u}")
+                st.markdown(f"**main\\_topics:** {', '.join(topics)}")
 
         st.divider()
