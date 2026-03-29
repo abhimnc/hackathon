@@ -1,0 +1,21 @@
+.DS_Store
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+env/
+
+.git/
+.idea/
+.vscode/
+
+*.log
+
+# Do not bake secrets into images
+.env
